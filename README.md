@@ -208,3 +208,53 @@ export default {
 在这个例子中，`useLastChanged` 被用来跟踪 `count` 的最后一次改变。每次 `count` 的值改变时，`lastChanged` 的值会更新为当前的时间戳。然后，我们在模板中显示这个时间戳，表示 `count` 的最后一次改变的时间。
 
 这样，你就可以在组件中很方便地跟踪响应式引用的最后一次改变，并在模板中显示这个时间。
+
+### useLocalStorage
+
+`useLocalStorage` 是 VueUse 库中的一个函数，它用于在浏览器的本地存储（localStorage）中存储和读取数据。这个函数返回一个响应式引用，你可以通过改变这个引用的值来改变 localStorage 中的数据，也可以通过读取这个引用的值来读取 localStorage 中的数据。
+
+下面是一个使用 `useLocalStorage` 的例子：
+
+首先，确保你已经安装了 `@vueuse/core`：
+
+```bash
+npm install @vueuse/core
+```
+
+然后，在你的 Vue 组件中使用 `useLocalStorage`：
+
+```javascript
+import { useLocalStorage } from '@vueuse/core';
+
+export default {
+  setup() {
+    // 使用 useLocalStorage 创建一个响应式引用，这个引用对应 localStorage 中的 'count' 数据
+    const count = useLocalStorage('count', 0);
+
+    // 创建一个函数，用于改变 count 的值
+    function increment() {
+      count.value++;
+    }
+
+    return {
+      count,
+      increment,
+    };
+  },
+};
+```
+
+在模板中，你可以这样使用：
+
+```html
+<template>
+  <div>
+    <button @click="increment">增加</button>
+    <p>当前值：{{ count }}</p>
+  </div>
+</template>
+```
+
+在这个例子中，`useLocalStorage` 被用来创建一个`响应式`引用，这个引用对应 localStorage 中的 'count' 数据。每次 `count` 的值改变时，localStorage 中的 'count' 数据也会相应地改变。同时，如果你刷新浏览器，`count` 的值会保持为最后一次改变的值，因为这个值已经被存储在了 localStorage 中。
+
+这样，你就可以在组件中很方便地使用 localStorage 来存储和读取数据。
