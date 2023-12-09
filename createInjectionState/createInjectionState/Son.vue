@@ -2,6 +2,7 @@
 import { useCounterStore } from '../state_store/useCounterStore'
 
 const conuterStore = useCounterStore()
+
 </script>
 
 <template>
