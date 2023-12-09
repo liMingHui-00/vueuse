@@ -258,3 +258,66 @@ export default {
 在这个例子中，`useLocalStorage` 被用来创建一个`响应式`引用，这个引用对应 localStorage 中的 'count' 数据。每次 `count` 的值改变时，localStorage 中的 'count' 数据也会相应地改变。同时，如果你刷新浏览器，`count` 的值会保持为最后一次改变的值，因为这个值已经被存储在了 localStorage 中。
 
 这样，你就可以在组件中很方便地使用 localStorage 来存储和读取数据。
+
+### useManualRefHistory
+
+`useManualRefHistory` 是 VueUse 库中的一个函数，用于手动跟踪响应式引用（`ref`）的历史记录。与 `useRefHistory` 不同，`useManualRefHistory` 不会自动记录每次引用值的变化，而是需要你手动触发记录。
+
+下面是一个使用 `useManualRefHistory` 的例子：
+
+首先，确保你已经安装了 `@vueuse/core`：
+
+```bash
+npm install @vueuse/core
+```
+
+然后，在你的 Vue 组件中使用 `useManualRefHistory`：
+
+```javascript
+import { ref } from 'vue';
+import { useManualRefHistory } from '@vueuse/core';
+
+export default {
+  setup() {
+    // 创建一个响应式引用
+    const count = ref(0);
+
+    // 使用 useManualRefHistory 跟踪 count 的历史记录
+    const { commit, history } = useManualRefHistory(count);
+
+    // 创建一个函数，用于改变 count 的值并记录历史
+    function increment() {
+      count.value++;
+      commit(); // 手动触发记录历史
+    }
+
+    return {
+      count,
+      increment,
+      history,
+    };
+  },
+};
+```
+
+在模板中，你可以这样使用：
+
+```html
+<template>
+  <div>
+    <button @click="increment">增加</button>
+    <p>当前值：{{ count }}</p>
+    <h3>历史记录：</h3>
+    <ul>
+      <li v-for="(entry, index) in history.present" :key="index">
+        {{ entry }}
+      </li>
+    </ul>
+  </div>
+</template>
+```
+
+在这个例子中，`useManualRefHistory` 被用来创建一个记录 `count` 历史的对象。每次 `count` 的值改变时，你需要调用 `commit()` 函数来手动记录这个变化。历史记录会被保存在 `history` 对象中，你可以在模板中遍历 `history.present` 来显示历史记录。
+
+这样，你就可以在组件中手动控制何时记录响应式引用的历史，以及如何显示这些历史记录。
+
