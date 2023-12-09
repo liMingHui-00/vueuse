@@ -153,3 +153,58 @@ export default {
 
 这样，你就可以在组件中很方便地管理异步数据的状态，并在模板中根据不同的状态渲染不同的 UI。
 
+### useLastChanged
+
+`useLastChanged` 是 VueUse 库中的一个函数，它用于跟踪响应式引用的最后一次改变。这个函数返回一个包含最后一次改变的时间戳的响应式引用。
+
+下面是一个使用 `useLastChanged` 的例子：
+
+首先，确保你已经安装了 `@vueuse/core`：
+
+```bash
+npm install @vueuse/core
+```
+
+然后，在你的 Vue 组件中使用 `useLastChanged`：
+
+```javascript
+import { ref } from 'vue';
+import { useLastChanged } from '@vueuse/core';
+
+export default {
+  setup() {
+    // 创建一个响应式引用
+    const count = ref(0);
+
+    // 使用 useLastChanged 跟踪 count 的最后一次改变
+    const lastChanged = useLastChanged(count);
+
+    // 创建一个函数，用于改变 count 的值
+    function increment() {
+      count.value++;
+    }
+
+    return {
+      count,
+      lastChanged,
+      increment,
+    };
+  },
+};
+```
+
+在模板中，你可以这样使用：
+
+```html
+<template>
+  <div>
+    <button @click="increment">增加</button>
+    <p>当前值：{{ count }}</p>
+    <p>最后一次改变：{{ new Date(lastChanged) }}</p>
+  </div>
+</template>
+```
+
+在这个例子中，`useLastChanged` 被用来跟踪 `count` 的最后一次改变。每次 `count` 的值改变时，`lastChanged` 的值会更新为当前的时间戳。然后，我们在模板中显示这个时间戳，表示 `count` 的最后一次改变的时间。
+
+这样，你就可以在组件中很方便地跟踪响应式引用的最后一次改变，并在模板中显示这个时间。
