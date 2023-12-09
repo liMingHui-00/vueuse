@@ -321,3 +321,180 @@ export default {
 
 这样，你就可以在组件中手动控制何时记录响应式引用的历史，以及如何显示这些历史记录。
 
+### useRefHistory
+
+`useRefHistory` 是 VueUse 库中的一个函数，它用于自动跟踪响应式引用（`ref`）的历史记录。每次引用值改变时，`useRefHistory` 都会自动记录这个变化。
+
+下面是一个使用 `useRefHistory` 的例子：
+
+首先，确保你已经安装了 `@vueuse/core`：
+
+```bash
+npm install @vueuse/core
+```
+
+然后，在你的 Vue 组件中使用 `useRefHistory`：
+
+```javascript
+import { ref } from 'vue';
+import { useRefHistory } from '@vueuse/core';
+
+export default {
+  setup() {
+    // 创建一个响应式引用
+    const count = ref(0);
+
+    // 使用 useRefHistory 跟踪 count 的历史记录
+    const { history } = useRefHistory(count);
+
+    // 创建一个函数，用于改变 count 的值
+    function increment() {
+      count.value++;
+    }
+
+    return {
+      count,
+      increment,
+      history,
+    };
+  },
+};
+```
+
+在模板中，你可以这样使用：
+
+```html
+<template>
+  <div>
+    <button @click="increment">增加</button>
+    <p>当前值：{{ count }}</p>
+    <h3>历史记录：</h3>
+    <ul>
+      <li v-for="(entry, index) in history.entries" :key="index">
+        {{ entry }}
+      </li>
+    </ul>
+  </div>
+</template>
+```
+
+在这个例子中，`useRefHistory` 被用来创建一个记录 `count` 历史的对象。每次 `count` 的值改变时，历史记录会自动更新。历史记录会被保存在 `history` 对象中，你可以在模板中遍历 `history.entries` 来显示历史记录。
+
+这样，你就可以在组件中自动跟踪响应式引用的历史，以及如何显示这些历史记录。
+
+### useStorageAsync
+
+`useStorageAsync` 是 VueUse 库中的一个函数，它用于异步地读取和写入存储（例如 localStorage 或 sessionStorage）。这个函数返回一个响应式引用，你可以用它来获取和设置存储的值。
+
+下面是一个使用 `useStorageAsync` 的例子：
+
+首先，确保你已经安装了 `@vueuse/core`：
+
+```bash
+npm install @vueuse/core
+```
+
+然后，在你的 Vue 组件中使用 `useStorageAsync`：
+
+```javascript
+import { useStorageAsync } from '@vueuse/core';
+
+export default {
+  async setup() {
+    // 使用 useStorageAsync 创建一个响应式引用，用于读取和写入 'count' 键的值
+    const count = useStorageAsync('count', 0);
+
+    // 等待存储的值被读取
+    await count.ready;
+
+    // 创建一个函数，用于增加 count 的值
+    function increment() {
+      count.value++;
+    }
+
+    return {
+      count,
+      increment,
+    };
+  },
+};
+```
+
+在模板中，你可以这样使用：
+
+```html
+<template>
+  <div>
+    <button @click="increment">增加</button>
+    <p>当前值：{{ count }}</p>
+  </div>
+</template>
+```
+
+在这个例子中，`useStorageAsync` 被用来创建一个响应式引用 `count`，它的值是存储中 'count' 键的值。如果存储中没有 'count' 键，那么 `count` 的初始值会是 0。每次 `count` 的值改变时，这个变化会自动保存到存储中。
+
+注意，因为 `useStorageAsync` 是异步的，所以在使用 `count` 之前，你需要等待 `count.ready` Promise 解析。这确保了存储的值已经被正确地读取到 `count` 中。
+
+这样，你就可以在组件中异步地读取和写入存储的值，以及如何显示这些值。
+
+### useThrottledRefHistory
+
+`useThrottledRefHistory` 是 VueUse 库中的一个函数，它用于自动跟踪响应式引用（`ref`）的历史记录，并且在记录历史时会进行节流处理。这意味着在指定的时间间隔内，只会记录最后一次的值变化。
+
+下面是一个使用 `useThrottledRefHistory` 的例子：
+
+首先，确保你已经安装了 `@vueuse/core`：
+
+```bash
+npm install @vueuse/core
+```
+
+然后，在你的 Vue 组件中使用 `useThrottledRefHistory`：
+
+```javascript
+import { ref } from 'vue';
+import { useThrottledRefHistory } from '@vueuse/core';
+
+export default {
+  setup() {
+    // 创建一个响应式引用
+    const count = ref(0);
+
+    // 使用 useThrottledRefHistory 跟踪 count 的历史记录，节流间隔为 1000 毫秒
+    const { history } = useThrottledRefHistory(count, 1000);
+
+    // 创建一个函数，用于改变 count 的值
+    function increment() {
+      count.value++;
+    }
+
+    return {
+      count,
+      increment,
+      history,
+    };
+  },
+};
+```
+
+在模板中，你可以这样使用：
+
+```html
+<template>
+  <div>
+    <button @click="increment">增加</button>
+    <p>当前值：{{ count }}</p>
+    <h3>历史记录：</h3>
+    <ul>
+      <li v-for="(entry, index) in history.entries" :key="index">
+        {{ entry }}
+      </li>
+    </ul>
+  </div>
+</template>
+```
+
+在这个例子中，`useThrottledRefHistory` 被用来创建一个记录 `count` 历史的对象。每次 `count` 的值改变时，历史记录会自动更新，但是在 1000 毫秒的间隔内，只会记录最后一次的值变化。历史记录会被保存在 `history` 对象中，你可以在模板中遍历 `history.entries` 来显示历史记录。
+
+这样，你就可以在组件中自动跟踪响应式引用的历史，并且在记录历史时进行节流处理。
+
