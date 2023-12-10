@@ -633,3 +633,58 @@ useDraggable(draggableElement)
 注意，我们在样式中设置了 `position: relative;`，这是因为 `transform` 属性只对定位元素有效。在这个例子中，我们使元素相对于其初始位置定位，所以设置 `position: relative;`。
 
 现在，当你拖拽这个元素时，它会根据你的拖拽移动，当你释放鼠标时，它会停在当前位置。
+
+### useDropZone
+
+`useDropZone` 是 VueUse 库中的一个函数，用于实现拖放区域的功能。它提供了一种简单的方法来创建一个可以接收拖放的区域，并且能够响应拖放事件。
+
+下面是一个使用 `useDropZone` 的例子：
+
+首先，确保你已经安装了 `@vueuse/core`：
+
+```bash
+npm install @vueuse/core
+```
+
+然后，在你的 Vue 组件中使用 `useDropZone`：
+
+```vue
+<template>
+  <div ref="dropZoneElement" class="drop-zone">
+    拖放文件到这里
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useDropZone } from '@vueuse/core'
+
+const dropZoneElement = ref(null)
+function dropZoneFn(e) {
+  console.log('Dropped files:', e.dataTransfer.files)
+}
+// 使用 useDropZone 创建一个拖放区域
+useDropZone(dropZoneElement, dropZoneFn)
+</script>
+
+<style>
+.drop-zone {
+  width: 200px;
+  height: 200px;
+  border: 2px dashed #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+```
+
+在这个例子中，我们首先通过 `ref` 函数创建了一个引用 `dropZoneElement`，然后在模板中给一个 `div` 元素设置了 `ref="dropZoneElement"`，这样我们就可以在 JavaScript 中访问这个 DOM 元素。
+
+接着，我们在 `setup` 函数中调用 `useDropZone` 并传入 `dropZoneElement` 作为参数，这样就创建了一个可以接收拖放的区域。
+
+然后，我们监听 `drop` 事件，当用户拖放文件到这个区域时，我们可以在事件处理函数中获取到拖放的文件。
+
+最后，我们通过样式添加了一些基础的拖放区域样式。
+
+现在，你可以试试拖放文件到这个区域，然后在浏览器的控制台中查看拖放的文件信息。

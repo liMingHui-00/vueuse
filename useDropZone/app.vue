@@ -9,11 +9,14 @@ import { ref } from 'vue'
 import { useDropZone } from '@vueuse/core'
 
 const dropZoneElement = ref(null)
+
+// 使用 useDropZone 创建一个拖放区域
+const dropZone = useDropZone(dropZoneElement, dropZoneFn)
+
 function dropZoneFn(e) {
   console.log('Dropped files:', e.dataTransfer.files)
 }
-// 使用 useDropZone 创建一个拖放区域
-useDropZone(dropZoneElement, dropZoneFn)
+
 </script>
 
 <style>
