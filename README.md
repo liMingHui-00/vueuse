@@ -502,6 +502,8 @@ export default {
 
 ## elements
 
+### useActiveElement
+
 `useActiveElement` 是 VueUse 库中的一个函数，它用于跟踪当前活动（聚焦）的元素。当用户在页面上的不同元素之间切换焦点时，这个函数会自动更新活动元素的引用。
 
 下面是一个使用 `useActiveElement` 的例子：
@@ -544,4 +546,47 @@ export default {
 在这个例子中，`useActiveElement` 被用来创建一个响应式引用 `activeElement`，它的值是当前活动（聚焦）的元素。当用户在输入框之间切换焦点时，`activeElement` 的值会自动更新。在模板中，你可以使用 `activeElement.tagName` 和 `activeElement.placeholder` 来显示当前活动元素的标签名和占位符文本。
 
 这样，你就可以在组件中跟踪当前活动（聚焦）的元素，并在模板中显示相关信息。
+
+### useDocumentVisibility
+
+`useDocumentVisibility` 是 VueUse 库中的一个函数，它用于跟踪文档的可见性状态。当用户切换到其他标签页或最小化浏览器窗口时，文档会变为不可见状态，这个函数会自动更新文档的可见性状态。
+
+下面是一个使用 `useDocumentVisibility` 的例子：
+
+首先，确保你已经安装了 `@vueuse/core`：
+
+```bash
+npm install @vueuse/core
+```
+
+然后，在你的 Vue 组件中使用 `useDocumentVisibility`：
+
+```javascript
+import { useDocumentVisibility } from '@vueuse/core';
+
+export default {
+  setup() {
+    // 使用 useDocumentVisibility 跟踪文档的可见性状态
+    const visibility = useDocumentVisibility();
+
+    return {
+      visibility,
+    };
+  },
+};
+```
+
+在模板中，你可以这样使用：
+
+```html
+<template>
+  <div>
+    <p>文档的可见性状态：{{ visibility }}</p>
+  </div>
+</template>
+```
+
+在这个例子中，`useDocumentVisibility` 被用来创建一个响应式引用 `visibility`，它的值是文档的可见性状态。当用户切换到其他标签页或最小化浏览器窗口时，`visibility` 的值会自动更新。在模板中，你可以使用 `visibility` 来显示文档的可见性状态。
+
+这样，你就可以在组件中跟踪文档的可见性状态，并在模板中显示相关信息。
 
