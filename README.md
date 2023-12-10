@@ -590,3 +590,46 @@ export default {
 
 这样，你就可以在组件中跟踪文档的可见性状态，并在模板中显示相关信息。
 
+### useDraggable
+
+要实现拖拽后元素的位置改变，你可以使用 `useDraggable` 函数返回的 `x` 和 `y` 值。这两个值表示元素从其初始位置移动的距离。你可以使用这两个值来更新元素的位置。
+
+下面是一个例子：
+
+```vue
+<script setup>
+import { useDraggable } from '@vueuse/core'
+import { ref } from 'vue'
+const draggableElement = ref(null)
+const { x, y, style } = useDraggable(draggableElement, { initialValue: { x: 40, y: 40 } })
+// 使用useDraggable实现元素的拖拽
+useDraggable(draggableElement)
+</script>
+<template>
+  <div ref="draggableElement" class="draggable" style="width: 200px;height: 200px;background-color: aquamarine;"
+    :style='style'>
+    ✌拖拽我 I am at {{ x }}, {{ y }}
+  </div>
+</template>
+<style scoped>
+.draggable {
+  /* 小手握紧 */
+  cursor: grab;
+  /* 防止拖拽时选中文本 */
+  user-select: none;
+  /* 使元素可以移动 */
+  position: relative;
+}
+
+.draggable:active {
+  /* 小手张开 */
+  cursor: grabbing;
+}
+</style>
+```
+
+在这个例子中，我们使用 `useDraggable` 的返回值 `x` 和 `y` 来更新元素的位置。我们在模板中使用 `:style` 绑定来设置元素的 `transform` 属性，使元素根据 `x` 和 `y` 的值移动。
+
+注意，我们在样式中设置了 `position: relative;`，这是因为 `transform` 属性只对定位元素有效。在这个例子中，我们使元素相对于其初始位置定位，所以设置 `position: relative;`。
+
+现在，当你拖拽这个元素时，它会根据你的拖拽移动，当你释放鼠标时，它会停在当前位置。
