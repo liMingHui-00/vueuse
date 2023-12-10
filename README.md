@@ -688,3 +688,55 @@ useDropZone(dropZoneElement, dropZoneFn)
 最后，我们通过样式添加了一些基础的拖放区域样式。
 
 现在，你可以试试拖放文件到这个区域，然后在浏览器的控制台中查看拖放的文件信息。
+
+### useElementVisibility
+
+`useElementVisibility` 是 VueUse 库中的一个函数，它可以用来检测一个元素是否在视口中可见。这个函数返回一个响应式的 `ref` 对象，当元素在视口中可见时，这个 `ref` 对象的值为 `true`，否则为 `false`。
+
+下面是一个使用 `useElementVisibility` 的例子：
+
+首先，确保你已经安装了 `@vueuse/core`：
+
+```bash
+npm install @vueuse/core
+```
+
+然后，在你的 Vue 组件中使用 `useElementVisibility`：
+
+```vue
+<template>
+  <div ref="myDiv" class="div">我是一个元素</div>
+  <p v-if="isVisible">元素在视口中可见</p>
+  <p v-else>元素在视口中不可见</p>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useElementVisibility } from '@vueuse/core'
+const myDiv = ref(null)
+// 使用useElementVisibility检测元素是否在窗口可见
+const isVisible = useElementVisibility(myDiv)
+</script>
+
+<style>
+body {
+  height: 5000px;
+}
+
+.div {
+  width: 200px;
+  height: 200px;
+  background-color: lightblue;
+
+}
+</style>
+```
+
+在这个例子中，我们首先通过 `ref` 函数创建了一个引用 `myElement`，然后在模板中给一个 `div` 元素设置了 `ref="myElement"`，这样我们就可以在 JavaScript 中访问这个 DOM 元素。
+
+接着，我们在 `setup` 函数中调用 `useElementVisibility` 并传入 `myElement` 作为参数，这样就可以创建一个响应式的 `ref` 对象 `isVisible`，用来检测元素是否在视口中可见。
+
+然后，我们在模板中使用 `v-if` 和 `v-else` 指令来根据 `isVisible` 的值显示不同的文本。
+
+现在，你可以试试滚动页面，看看元素是否在视口中可见的文本是否会根据元素的可见性改变。
+
