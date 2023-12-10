@@ -1,5 +1,7 @@
 # vueuse
 
+## state
+
 ### useMouse
 
 这个是用来获取鼠标的坐标
@@ -497,4 +499,49 @@ export default {
 在这个例子中，`useThrottledRefHistory` 被用来创建一个记录 `count` 历史的对象。每次 `count` 的值改变时，历史记录会自动更新，但是在 1000 毫秒的间隔内，只会记录最后一次的值变化。历史记录会被保存在 `history` 对象中，你可以在模板中遍历 `history.entries` 来显示历史记录。
 
 这样，你就可以在组件中自动跟踪响应式引用的历史，并且在记录历史时进行节流处理。
+
+## elements
+
+`useActiveElement` 是 VueUse 库中的一个函数，它用于跟踪当前活动（聚焦）的元素。当用户在页面上的不同元素之间切换焦点时，这个函数会自动更新活动元素的引用。
+
+下面是一个使用 `useActiveElement` 的例子：
+
+首先，确保你已经安装了 `@vueuse/core`：
+
+```bash
+npm install @vueuse/core
+```
+
+然后，在你的 Vue 组件中使用 `useActiveElement`：
+
+```javascript
+import { useActiveElement } from '@vueuse/core';
+
+export default {
+  setup() {
+    // 使用 useActiveElement 跟踪当前活动元素
+    const activeElement = useActiveElement();
+
+    return {
+      activeElement,
+    };
+  },
+};
+```
+
+在模板中，你可以这样使用：
+
+```html
+<template>
+  <div>
+    <input type="text" placeholder="输入框 1" />
+    <input type="text" placeholder="输入框 2" />
+    <p>当前活动元素：{{ activeElement.tagName }} ({{ activeElement.placeholder }})</p>
+  </div>
+</template>
+```
+
+在这个例子中，`useActiveElement` 被用来创建一个响应式引用 `activeElement`，它的值是当前活动（聚焦）的元素。当用户在输入框之间切换焦点时，`activeElement` 的值会自动更新。在模板中，你可以使用 `activeElement.tagName` 和 `activeElement.placeholder` 来显示当前活动元素的标签名和占位符文本。
+
+这样，你就可以在组件中跟踪当前活动（聚焦）的元素，并在模板中显示相关信息。
 
