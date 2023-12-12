@@ -1,26 +1,21 @@
 <template>
-  <div ref="myDiv" class="div">我是一个元素</div>
-  <p v-if="isVisible">元素在视口中可见</p>
-  <p v-else>元素在视口中不可见</p>
+  <div>
+    <div ref="targetElement" style="width: 100px; height: 100px; background-color: lightblue;">
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { useElementVisibility } from '@vueuse/core'
-const myDiv = ref(null)
-// 使用useElementVisibility检测元素是否在窗口可见
-const isVisible = useElementVisibility(myDiv)
+import { useMutationObserver } from '@vueuse/core'
+const targetElement = ref(null)
+useMutationObserver(targetElement, (mutations) => {
+  if (mutations[0])
+    messages.value.push(mutations[0].attributeName)
+},
+  {
+    attributes: true
+  }
+)
+
 </script>
-
-<style>
-body {
-  height: 5000px;
-}
-
-.div {
-  width: 200px;
-  height: 200px;
-  background-color: lightblue;
-
-}
-</style>
