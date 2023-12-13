@@ -901,3 +901,34 @@ async function startBluetooch() {
 在 `startBluetooch` 方法中，我们使用 `navigator.bluetooth.requestDevice` 方法来请求连接蓝牙设备。一旦成功连接到设备，我们将设备添加到 `devices` 数组中，并在模板中显示出来。
 
 请注意，这只是一个简单的示例，你可能需要根据你的具体需求进行更多的蓝牙设备交互操作。同时，为了在不同的浏览器中获得最佳的兼容性，你可能需要检查和处理不同浏览器之间的差异。
+
+### useBreakpoints
+
+`useBreakpoints` 是 VueUse 库中的一个函数，它可以帮助你根据不同的屏幕尺寸来调整你的 Vue 应用的行为。以下是一个如何使用 `useBreakpoints` 的例子：
+
+```javascript
+<template>
+  <div>
+    <h1 v-if="breakpoints.xs">Extra small screen</h1>
+    <h1 v-else-if="breakpoints.sm">Small screen</h1>
+    <h1 v-else-if="breakpoints.md">Medium screen</h1>
+    <h1 v-else-if="breakpoints.lg">Large screen</h1>
+    <h1 v-else>Extra large screen</h1>
+  </div>
+</template>
+
+<script setup>
+import { useBreakpoints } from '@vueuse/core'
+
+const breakpoints = useBreakpoints({
+  xs: '(max-width: 576px)',
+  sm: '(max-width: 768px)',
+  md: '(max-width: 992px)',
+  lg: '(max-width: 1200px)',
+})
+</script>
+```
+
+在这个例子中，我们首先从 `@vueuse/core` 导入 `useBreakpoints` 函数。然后，我们调用 `useBreakpoints` 函数并传入一个对象，该对象定义了我们的断点。这些断点是 CSS 媒体查询字符串，它们定义了不同的屏幕尺寸。
+
+然后，我们在模板中使用 `v-if` 和 `v-else-if` 指令来根据当前的屏幕尺寸显示不同的内容。`breakpoints` 对象的属性（如 `breakpoints.xs`，`breakpoints.sm` 等）是响应式的，所以当屏幕尺寸改变时，显示的内容也会相应地更新。
