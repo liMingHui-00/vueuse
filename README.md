@@ -969,3 +969,31 @@ function sendMessage() {
 我们还定义了一个 `sendMessage` 函数，当点击按钮时，这个函数会通过 `postMessage` 方法发送一条消息。这条消息将被所有监听 'myChannel' 的 Broadcast Channel 接收。
 
 请注意，Broadcast Channel API 只在同源的上下文中工作，也就是说，只有在同一域名、同一协议、同一端口的上下文中才能接收到消息。
+
+### useBrowserLocation
+
+`useBrowserLocation` 是 VueUse 库中的一个函数，它提供了一个简单的方式来获取和监听浏览器的地理位置信息。这个函数使用了浏览器的 Geolocation API。
+
+以下是一个如何使用 `useBrowserLocation` 的例子：
+
+```javascript
+<template>
+  <div>
+    <p>Latitude: {{ location.latitude }}</p>
+    <p>Longitude: {{ location.longitude }}</p>
+  </div>
+</template>
+
+<script setup>
+import { useBrowserLocation } from '@vueuse/core'
+
+const location = useBrowserLocation()
+</script>
+```
+
+在这个例子中，我们首先从 `@vueuse/core` 导入 `useBrowserLocation` 函数。然后，我们调用 `useBrowserLocation` 函数并将返回的响应式引用赋值给 `location`。
+
+在模板中，我们显示了 `location` 对象的 `latitude` 和 `longitude` 属性，这两个属性分别代表了纬度和经度。
+
+请注意，由于隐私原因，浏览器可能会要求用户允许网站访问地理位置信息。此外，Geolocation API 只在安全上下文中可用，也就是说，你的网站必须通过 HTTPS 提供，或者是在 localhost 上运行。
+
