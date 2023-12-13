@@ -821,3 +821,44 @@ export default {
 
 注意：`useWindowScroll` 只能在 Vue 组件的 `setup` 函数中使用。
 
+### useWindowSize
+
+`useWindowSize` 是 VueUse 库中的一个函数，它用于获取和监听浏览器窗口的大小。以下是一个使用 `useWindowSize` 的例子：
+
+首先，确保你已经安装了 `@vueuse/core` 包，如果你还没有安装，可以使用以下命令进行安装：
+
+```bash
+npm install @vueuse/core
+# 或者
+yarn add @vueuse/core
+```
+
+然后，在你的 Vue 组件中，你可以这样使用 `useWindowSize`：
+
+```javascript
+<template>
+  <div>
+    <h1>Window size: {{ width }} x {{ height }}</h1>
+  </div>
+</template>
+
+<script>
+import { useWindowSize } from '@vueuse/core'
+
+export default {
+  setup() {
+    const { width, height } = useWindowSize()
+
+    return {
+      width,
+      height
+    }
+  }
+}
+</script>
+```
+
+在这个例子中，`useWindowSize` 返回一个包含 `width` 和 `height` 的对象，这两个值分别代表窗口的宽度和高度。我们在模板中使用这两个值来动态显示窗口的大小。
+
+注意：`useWindowSize` 只能在 Vue 组件的 `setup` 函数中使用。
+
