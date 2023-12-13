@@ -862,3 +862,42 @@ export default {
 
 注意：`useWindowSize` 只能在 Vue 组件的 `setup` 函数中使用。
 
+## brower
+
+### useBluetooth
+
+你可以尝试使用 `Web Bluetooth API` 来与蓝牙设备进行交互。这是一个原生的 JavaScript API，可以在现代浏览器中使用。以下是一个简单的示例：
+
+```javascript
+<template>
+  <div>
+    <h3> Bluetooch Devices</h3>
+    <button @click="startBluetooch">连接蓝牙</button>
+    <ul>
+      <li v-for="device in devices" :key="device.id">{{ device.name }}</li>
+    </ul>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+let devices = ref([])
+async function startBluetooch() {
+  try {
+    const device = await navigator.bluetooth.requestDevice({
+      acceptAllDevices: true
+    })
+    devices.value.push(device)
+  } catch (error) {
+    console.error('Error initializing Bluetooth:', error)
+  }
+}
+
+</script>
+
+```
+
+在 `startBluetooch` 方法中，我们使用 `navigator.bluetooth.requestDevice` 方法来请求连接蓝牙设备。一旦成功连接到设备，我们将设备添加到 `devices` 数组中，并在模板中显示出来。
+
+请注意，这只是一个简单的示例，你可能需要根据你的具体需求进行更多的蓝牙设备交互操作。同时，为了在不同的浏览器中获得最佳的兼容性，你可能需要检查和处理不同浏览器之间的差异。
