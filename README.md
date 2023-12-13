@@ -1031,3 +1031,52 @@ function copyToClipboard() {
 
 `isCopied` 是一个响应式引用，当文本被成功复制到剪贴板时，它的值会变为 `true`。我们在模板中使用了一个条件渲染，当 `isCopied` 为 `true` 时，显示一条提示消息。
 
+### useColorMode
+
+`useColorMode` 是 VueUse 库中的一个函数，它提供了一个简单的方式来管理和切换网站的颜色模式（例如，明亮模式和暗黑模式）。以下是一个如何使用 `useColorMode` 的例子：
+
+```html
+<template>
+  <div :class="colorMode">
+    <p>当前模式: {{ colorMode }}</p>
+    <button @click="toggleColorMode">切换</button>
+  </div>
+</template>
+
+<script setup>
+import { useColorMode } from '@vueuse/core'
+
+const colorMode = useColorMode()
+function toggleColorMode() {
+  if (colorMode.value === 'dark') {
+    colorMode.value = 'light'
+  } else {
+    colorMode.value = 'dark'
+  }
+
+}
+console.log(colorMode);
+
+</script>
+
+<style scoped>
+.light {
+  background-color: white;
+  color: black;
+}
+
+.dark {
+  background-color: black;
+  color: white;
+}
+</style>
+```
+
+在这个例子中，我们首先从 `@vueuse/core` 导入 `useColorMode` 函数。
+
+我们在模板中显示了当前的颜色模式，并创建了一个按钮，当用户点击这个按钮时，颜色模式会切换。
+
+请注意，你需要在 CSS 中定义明亮模式和暗黑模式的样式。例如，你可以为 `.light` 类定义明亮模式的样式，为 `.dark` 类定义暗黑模式的样式。然后，你可以使用 `:class` 指令将 `colorMode` 作为类名应用到元素上。
+
+这只是一个基本的例子，实际使用时，你可能需要根据你的应用的需求进行一些调整。
+

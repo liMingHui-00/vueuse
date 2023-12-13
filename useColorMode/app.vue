@@ -9,7 +9,7 @@
 import { useColorMode } from '@vueuse/core'
 
 const colorMode = useColorMode()
-function toggleColorMode() {
+function toggleColorMode(c) {
   if (colorMode.value === 'dark') {
     colorMode.value = 'light'
   } else {
