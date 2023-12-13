@@ -740,3 +740,42 @@ body {
 
 现在，你可以试试滚动页面，看看元素是否在视口中可见的文本是否会根据元素的可见性改变。
 
+### useWindowFocus
+
+VueUse 是一个 Vue Composable 函数库，其中的 `useWindowFocus` 函数用于检测当前浏览器窗口是否处于聚焦状态。以下是一个使用 `useWindowFocus` 的例子：
+
+首先，你需要安装 `@vueuse/core` 包，如果你还没有安装，可以使用以下命令进行安装：
+
+```bash
+npm install @vueuse/core
+# 或者
+yarn add @vueuse/core
+```
+
+然后，在你的 Vue 组件中，你可以这样使用 `useWindowFocus`：
+
+```javascript
+<template>
+  <div>
+    <h1>Window is {{ isFocused ? 'focused' : 'not focused' }}</h1>
+  </div>
+</template>
+
+<script>
+import { useWindowFocus } from '@vueuse/core'
+
+export default {
+  setup() {
+    const isFocused = useWindowFocus()
+
+    return {
+      isFocused
+    }
+  }
+}
+</script>
+```
+
+在这个例子中，`useWindowFocus` 返回一个响应式的 `Ref` 对象，当窗口聚焦时，`isFocused.value` 为 `true`，当窗口失去焦点时，`isFocused.value` 为 `false`。我们在模板中使用这个 `isFocused` 来动态显示窗口是否处于聚焦状态。
+
+注意：`useWindowFocus` 只能在 Vue 组件的 `setup` 函数中使用。
