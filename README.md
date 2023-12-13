@@ -932,3 +932,40 @@ const breakpoints = useBreakpoints({
 在这个例子中，我们首先从 `@vueuse/core` 导入 `useBreakpoints` 函数。然后，我们调用 `useBreakpoints` 函数并传入一个对象，该对象定义了我们的断点。这些断点是 CSS 媒体查询字符串，它们定义了不同的屏幕尺寸。
 
 然后，我们在模板中使用 `v-if` 和 `v-else-if` 指令来根据当前的屏幕尺寸显示不同的内容。`breakpoints` 对象的属性（如 `breakpoints.xs`，`breakpoints.sm` 等）是响应式的，所以当屏幕尺寸改变时，显示的内容也会相应地更新。
+
+### useBroadcastChannel
+
+`useBroadcastChannel` 是 VueUse 库中的一个函数，它提供了一个简单的方式来使用 Broadcast Channel API。Broadcast Channel API 允许你在同一浏览器的不同标签页、窗口、或者 iframe 之间进行通信。
+
+以下是一个如何使用 `useBroadcastChannel` 的例子：
+
+```javascript
+<template>
+  <div>
+    <button @click="sendMessage">Send Message</button>
+    <p>Received message: {{ message }}</p>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useBroadcastChannel } from '@vueuse/core'
+
+let message = ref('')
+const { postMessage } = useBroadcastChannel('myChannel', (msg) => {
+  message.value = msg
+})
+
+function sendMessage() {
+  postMessage('Hello from another tab!')
+}
+</script>
+```
+
+在这个例子中，我们首先从 `@vueuse/core` 导入 `useBroadcastChannel` 函数。然后，我们调用 `useBroadcastChannel` 函数并传入两个参数：一个是我们的频道名（在这个例子中是 'myChannel'），另一个是一个处理接收到的消息的函数。
+
+我们的处理函数将接收到的消息赋值给 `message`，这是一个响应式引用。然后，我们在模板中显示接收到的消息。
+
+我们还定义了一个 `sendMessage` 函数，当点击按钮时，这个函数会通过 `postMessage` 方法发送一条消息。这条消息将被所有监听 'myChannel' 的 Broadcast Channel 接收。
+
+请注意，Broadcast Channel API 只在同源的上下文中工作，也就是说，只有在同一域名、同一协议、同一端口的上下文中才能接收到消息。
