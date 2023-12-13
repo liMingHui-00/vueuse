@@ -997,3 +997,37 @@ const location = useBrowserLocation()
 
 请注意，由于隐私原因，浏览器可能会要求用户允许网站访问地理位置信息。此外，Geolocation API 只在安全上下文中可用，也就是说，你的网站必须通过 HTTPS 提供，或者是在 localhost 上运行。
 
+### useClipboard
+
+`useClipboard` 是 VueUse 库中的一个函数，它提供了一个简单的方式来与浏览器的剪贴板进行交互。以下是一个如何使用 `useClipboard` 的例子：
+
+```html
+<template>
+  <div>
+    <input type="text" v-model="textToCopy" placeholder="Enter text to copy" />
+    <button @click="copyToClipboard">Copy to Clipboard</button>
+    <p v-if="isCopyed"> {{ textToCopy }}</p>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useClipboard } from '@vueuse/core'
+let isCopyed = ref(false)
+
+const textToCopy = ref('')
+const { copy } = useClipboard()
+
+function copyToClipboard() {
+  isCopyed.value = !isCopyed.value
+  copy(textToCopy.value)
+}
+</script>
+```
+
+在这个例子中，我们首先从 `@vueuse/core` 导入 `useClipboard` 函数。然后，我们调用 `useClipboard` 函数并将返回的对象解构为 `copy` 。
+
+我们创建了一个输入框，用户可以在其中输入要复制到剪贴板的文本。当用户点击 "Copy to Clipboard" 按钮时，`copyToClipboard` 函数会被调用，将输入框中的文本复制到剪贴板。
+
+`isCopied` 是一个响应式引用，当文本被成功复制到剪贴板时，它的值会变为 `true`。我们在模板中使用了一个条件渲染，当 `isCopied` 为 `true` 时，显示一条提示消息。
+
