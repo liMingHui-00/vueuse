@@ -1080,3 +1080,47 @@ console.log(colorMode);
 
 这只是一个基本的例子，实际使用时，你可能需要根据你的应用的需求进行一些调整。
 
+### useCssVar
+
+在 `@vueuse/core` 库中，`useCssVar` 是一个用于操作 CSS 变量的函数。以下是一个简单的例子：
+
+```html
+<template>
+  <div>
+    <p>Current color: {{ color }}</p>
+    <button @click="changeColor">Change Color</button>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useCssVar } from '@vueuse/core'
+
+const color = ref('black')
+const setColor = useCssVar('--color')
+
+setColor(color)
+
+function changeColor() {
+  color.value = color.value === 'black' ? 'red' : 'black'
+}
+</script>
+
+<style scoped>
+div {
+  --color: black;
+  color: var(--color);
+}
+</style>
+```
+
+在这个例子中，我们首先在 CSS 中定义了一个名为 `--color` 的 CSS 变量，并将其设置为 `black`。然后，我们在 Vue 组件中创建了一个响应式引用 `color`，并使用 `useCssVar` 函数创建了一个函数 `setColor`，用于改变 CSS 变量 `--color` 的值。
+
+当用户点击 "Change Color" 按钮时，`changeColor` 函数会被调用，改变 `color` 的值。由于 `setColor` 函数与 `color` 引用绑定，因此 CSS 变量 `--color` 的值也会相应地改变，从而改变了文本的颜色。
+
+请注意，`useCssVar` 函数只能在支持 CSS 变量的浏览器中使用。
+
+
+
+
+
