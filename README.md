@@ -1120,6 +1120,48 @@ div {
 
 请注意，`useCssVar` 函数只能在支持 CSS 变量的浏览器中使用。
 
+### useDark
+
+在 `@vueuse/core` 库中，`useDark` 是一个用于切换深色模式和浅色模式的函数。以下是一个简单的例子：
+
+```html
+<template>
+  <div :class="{ dark: isDark.value }">
+    <p>当前模式：{{ isDark.value ? '深色' : '浅色' }}</p>
+    <button @click="toggleDarkMode">切换模式</button>
+  </div>
+</template>
+
+<script setup>
+import { useDark } from '@vueuse/core'
+
+const isDark = useDark()
+
+function toggleDarkMode() {
+  isDark.value = !isDark.value
+}
+</script>
+
+<style scoped>
+div {
+  background-color: white;
+  color: black;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+div.dark {
+  background-color: black;
+  color: white;
+}
+</style>
+```
+
+在这个例子中，我们首先在 CSS 中定义了两个类：一个用于浅色模式，另一个用于深色模式。然后，我们在 Vue 组件中使用 `useDark` 函数创建了一个响应式引用 `isDark`，用于表示当前是否处于深色模式。
+
+当用户点击 "切换模式" 按钮时，`toggleDarkMode` 函数会被调用，改变 `isDark` 的值。由于 `isDark` 引用与 `div` 元素的 `class` 属性绑定，因此深色模式和浅色模式之间的切换会通过改变 CSS 类来实现。
+
+请注意，`useDark` 函数依赖于浏览器的 `matchMedia` API，因此在不支持该 API 的浏览器中可能无法正常工作。
+
 
 
 
