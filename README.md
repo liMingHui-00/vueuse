@@ -1162,6 +1162,39 @@ div.dark {
 
 请注意，`useDark` 函数依赖于浏览器的 `matchMedia` API，因此在不支持该 API 的浏览器中可能无法正常工作。
 
+### useEventListener
+
+在 `@vueuse/core` 库中，`useEventListener` 是一个用于添加事件监听器的函数。以下是一个简单的例子：
+
+```html
+<template>
+  <div>
+    <p>鼠标位置：{{ x.value }}, {{ y.value }}</p>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useEventListener } from '@vueuse/core'
+
+const x = ref(0)
+const y = ref(0)
+
+useEventListener(window, 'mousemove', (event) => {
+  x.value = event.clientX
+  y.value = event.clientY
+})
+</script>
+```
+
+在这个例子中，我们首先在 Vue 组件中创建了两个响应式引用 `x` 和 `y`，用于存储鼠标的位置。然后，我们使用 `useEventListener` 函数添加了一个 `mousemove` 事件监听器，当鼠标移动时，监听器会更新 `x` 和 `y` 的值。
+
+这样，我们就可以在 Vue 组件中实时显示鼠标的位置了。
+
+请注意，`useEventListener` 函数接受三个参数：要添加监听器的对象，事件名称，以及事件处理函数。在这个例子中，我们将监听器添加到了 `window` 对象上，监听的事件是 `mousemove`，事件处理函数是一个更新 `x` 和 `y` 值的箭头函数。
+
+
+
 
 
 
