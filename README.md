@@ -1259,3 +1259,43 @@ const changeFavicon = useFavicon('/path/to/new/favicon.ico')
 
 最后，`useFavicon` 函数会更改网页的 `<link rel="icon">` 标签的 `href` 属性来更改 favicon。如果网页中没有这个标签，`useFavicon` 函数会创建一个新的标签。因此，你不需要在 HTML 中手动添加或更改这个标签。
 
+### useFileDialog
+
+在 `@vueuse/core` 库中，`useFileDialog` 是一个用于打开文件选择对话框并获取用户选择的文件的函数。以下是一个详细的例子：
+
+```html
+<template>
+  <div>
+    <button @click="openFileDialog">打开文件</button>
+    <p v-if="file.value">选择的文件：{{ file.value.name }}</p>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useFileDialog } from '@vueuse/core'
+
+const file = ref(null)
+const openFileDialog = useFileDialog((files) => {
+  if (files.length > 0) {
+    file.value = files[0]
+  }
+})
+</script>
+```
+
+在这个例子中，我们首先在 Vue 组件中创建了一个响应式引用 `file`，用于存储用户选择的文件。然后，我们使用 `useFileDialog` 函数创建了一个 `openFileDialog` 函数。
+
+当用户点击 "打开文件" 按钮时，`openFileDialog` 函数会被调用。这个函数会打开一个文件选择对话框，用户可以通过这个对话框选择一个文件。当用户选择了一个文件后，`openFileDialog` 函数会调用我们传递给它的回调函数，并将用户选择的文件作为参数传递给这个回调函数。在这个回调函数中，我们可以获取到用户选择的文件，并将其存储到 `file` 引用中。
+
+这样，我们就可以在 Vue 组件中显示用户选择的文件的名称了。
+
+请注意，`useFileDialog` 函数接受的回调函数的参数是一个 FileList 对象，这是一个类似于数组的对象，包含了用户选择的所有文件。在这个例子中，我们只获取了用户选择的第一个文件，但你可以根据需要处理所有的文件。
+
+此外，`useFileDialog` 函数返回的 `openFileDialog` 函数不接受任何参数，因此你不能在调用这个函数时传递任何参数。如果你需要在打开文件选择对话框时设置一些选项，例如限制用户只能选择某些类型的文件，你可以在调用 `useFileDialog` 函数时传递这些选项。例如，以下代码将限制用户只能选择图片文件：
+
+```javascript
+const openFileDialog = useFileDialog((files) => {
+  // 处理文件
+}, { accept: 'image/*' })
+```
