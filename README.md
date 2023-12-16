@@ -1230,3 +1230,32 @@ async function pickColor() {
 请注意，`useEyeDropper` 函数返回的 `pickColor` 函数是一个异步函数，因此我们需要使用 `await` 关键字等待颜色选择器的结果。此外，`pickColor` 函数返回的对象可能不包含 `sRGBHex` 属性，这表示用户没有选择任何颜色。在这种情况下，我们应该检查 `sRGBHex` 属性是否存在，以避免将 `color` 引用的值设置为 `undefined`。
 
 最后，`useEyeDropper` 函数依赖于浏览器的 EyeDropper API，因此在不支持该 API 的浏览器中可能无法正常工作。
+
+### useFavicon
+
+在 `@vueuse/core` 库中，`useFavicon` 是一个用于动态更改网页图标（favicon）的函数。以下是一个详细的例子：
+
+```html
+<template>
+  <div>
+    <button @click="changeFavicon">更改图标</button>
+  </div>
+</template>
+
+<script setup>
+import { useFavicon } from '@vueuse/core'
+
+const changeFavicon = useFavicon('/path/to/new/favicon.ico')
+</script>
+```
+
+在这个例子中，我们使用 `useFavicon` 函数创建了一个 `changeFavicon` 函数。这个函数接受一个参数，即新的 favicon 的 URL。
+
+当用户点击 "更改图标" 按钮时，`changeFavicon` 函数会被调用，网页的 favicon 就会被更改为新的图标。
+
+请注意，`useFavicon` 函数返回的是一个函数，而不是一个响应式引用或其他类型的值。这意味着你不能直接在模板中使用 `useFavicon`，而应该在 `setup` 函数中使用它来创建一个可以在模板中调用的函数。
+
+此外，`useFavicon` 函数接受的参数是新的 favicon 的 URL，而不是 favicon 图像本身。这意味着你需要将新的 favicon 图像上传到服务器，然后将图像的 URL 传递给 `useFavicon` 函数。
+
+最后，`useFavicon` 函数会更改网页的 `<link rel="icon">` 标签的 `href` 属性来更改 favicon。如果网页中没有这个标签，`useFavicon` 函数会创建一个新的标签。因此，你不需要在 HTML 中手动添加或更改这个标签。
+
