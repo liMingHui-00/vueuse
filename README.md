@@ -1299,3 +1299,53 @@ const openFileDialog = useFileDialog((files) => {
   // 处理文件
 }, { accept: 'image/*' })
 ```
+
+### useFileSystemAccess
+
+在 `@vueuse/core` 库中，`useFileSystemAccess` 是一个用于访问用户本地文件系统的函数。这个函数使用了 Web File System Access API，这是一个允许网页读取和写入用户本地文件的 API。以下是一个详细的例子：
+
+```html
+<template>
+  <div>
+    <button @click="openFile">打开文件</button>
+    <button @click="saveFile">保存文件</button>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useFileSystemAccess } from '@vueuse/core'
+
+const { openFile, saveFile } = useFileSystemAccess()
+
+const fileHandle = ref(null)
+const fileContents = ref('')
+
+openFile.onTriggered(async () => {
+  const file = await openFile.trigger()
+  if (file) {
+    fileHandle.value = file.handle
+    const contents = await file.text()
+    fileContents.value = contents
+  }
+})
+
+saveFile.onTriggered(async () => {
+  if (fileHandle.value) {
+    const writable = await fileHandle.value.createWritable()
+    await writable.write(fileContents.value)
+    await writable.close()
+  }
+})
+</script>
+```
+
+在这个例子中，我们首先使用 `useFileSystemAccess` 函数创建了 `openFile` 和 `saveFile` 两个函数。这两个函数分别用于打开文件和保存文件。
+
+当用户点击 "打开文件" 按钮时，`openFile` 函数会被调用。这个函数会打开一个文件选择对话框，用户可以通过这个对话框选择一个文件。当用户选择了一个文件后，`openFile` 函数会返回一个包含了文件句柄和文件内容的对象。我们可以使用这个对象的 `text` 方法获取到文件的文本内容，并将其存储到 `fileContents` 引用中。
+
+当用户点击 "保存文件" 按钮时，`saveFile` 函数会被调用。这个函数会打开一个文件保存对话框，用户可以通过这个对话框选择一个文件的保存位置。然后，我们可以使用文件句柄的 `createWritable` 方法创建一个可写的流，然后使用这个流的 `write` 方法将 `fileContents` 引用中的内容写入到文件中。
+
+请注意，`useFileSystemAccess` 函数返回的 `openFile` 和 `saveFile` 函数都是异步的，因此你需要使用 `await` 关键字等待它们的结果。此外，这两个函数都返回了一个 `onTriggered` 事件，你可以监听这个事件来处理文件的打开和保存操作。
+
+此外，由于 Web File System Access API 是一个相对新的 API，它可能不被所有的浏览器支持。因此，在使用 `useFileSystemAccess` 函数时，你应该检查用户的浏览器是否支持这个 API，并在不支持的情况下提供一个备用的操作方式。
