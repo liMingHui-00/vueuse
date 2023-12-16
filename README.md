@@ -1193,9 +1193,40 @@ useEventListener(window, 'mousemove', (event) => {
 
 请注意，`useEventListener` 函数接受三个参数：要添加监听器的对象，事件名称，以及事件处理函数。在这个例子中，我们将监听器添加到了 `window` 对象上，监听的事件是 `mousemove`，事件处理函数是一个更新 `x` 和 `y` 值的箭头函数。
 
+### useEyeDropper
 
+在 `@vueuse/core` 库中，`useEyeDropper` 是一个用于获取用户选择的颜色的函数。以下是一个详细的例子：
 
+```html
+<template>
+  <div>
+    <button @click="pickColor">选择颜色</button>
+    <p v-if="color.value">选择的颜色：{{ color.value }}</p>
+  </div>
+</template>
 
+<script setup>
+import { ref } from 'vue'
+import { useEyeDropper } from '@vueuse/core'
 
+const color = ref(null)
+const { pickColor } = useEyeDropper()
 
+async function pickColor() {
+  const result = await pickColor()
+  if (result.sRGBHex) {
+    color.value = result.sRGBHex
+  }
+}
+</script>
+```
 
+在这个例子中，我们首先在 Vue 组件中创建了一个响应式引用 `color`，用于存储用户选择的颜色。然后，我们使用 `useEyeDropper` 函数创建了一个 `pickColor` 函数。
+
+当用户点击 "选择颜色" 按钮时，`pickColor` 函数会被调用。这个函数会打开一个颜色选择器，用户可以通过这个选择器选择一个颜色。当用户选择了一个颜色后，`pickColor` 函数会返回一个包含颜色信息的对象，我们可以从这个对象中获取到用户选择的颜色，并将其存储到 `color` 引用中。
+
+这样，我们就可以在 Vue 组件中显示用户选择的颜色了。
+
+请注意，`useEyeDropper` 函数返回的 `pickColor` 函数是一个异步函数，因此我们需要使用 `await` 关键字等待颜色选择器的结果。此外，`pickColor` 函数返回的对象可能不包含 `sRGBHex` 属性，这表示用户没有选择任何颜色。在这种情况下，我们应该检查 `sRGBHex` 属性是否存在，以避免将 `color` 引用的值设置为 `undefined`。
+
+最后，`useEyeDropper` 函数依赖于浏览器的 EyeDropper API，因此在不支持该 API 的浏览器中可能无法正常工作。
